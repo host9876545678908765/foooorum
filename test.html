@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comment Section</title>
+  <style>
+    .comment {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      color: green; /* Change font color to green */
+    }
+    .comment .author {
+      font-weight: bold;
+    }
+    .comment .timestamp {
+      font-size: 0.8em;
+      color: #999;
+    }
+    .comment .content {
+      margin-top: 5px;
+    }
+    .comment .reply-form {
+      margin-top: 10px;
+    }
+    .comment .reply-form textarea {
+      margin-top: 5px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Forum</h1>
+
+  <h2><h></Thead></h2>
+  <form id="comment-form">
+    <label for="author">Name:</label>
+    <input type="text" id="author" required><br>
+
+    <label for="content">Comment:</label><br>
+    <textarea id="content" rows="4" required></textarea><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="comments">
+    <!-- Existing comments will be displayed here -->
+  </div>
+
+  <script>
+    // Function to handle form submission
+    function submitComment(event) {
+      event.preventDefault();
+
+      // Get the input values
+      var author = document.getElementById('author').value;
+      var content = document.getElementById('content').value;
+
+      // Create a new comment element
+      var commentElement = document.createElement('div');
+      commentElement.className = 'comment';
+
+      var authorElement = document.createElement('div');
+      authorElement.className = 'author';
+      authorElement.textContent = author;
+
+      var timestampElement = document.createElement('div');
+      timestampElement.className = 'timestamp';
+      timestampElement.textContent = new Date().toLocaleString();
+
+      var contentElement = document.createElement('div');
+      contentElement.className = 'content';
+      contentElement.textContent = content;
+
+      var replyForm = document.createElement('form');
+      replyForm.className = 'reply-form';
+
+      var replyTextarea = document.createElement('textarea');
+      replyTextarea.placeholder = 'Reply to this comment';
+      replyTextarea.rows = 2;
+      replyTextarea.required = true;
+
+      var replyButton = document.createElement('button');
+      replyButton.type = 'submit';
+      replyButton.textContent = 'Reply';
+
+      replyForm.appendChild(replyTextarea);
+      replyForm.appendChild(replyButton);
+
+      commentElement.appendChild(authorElement);
+      commentElement.appendChild(timestampElement);
+      commentElement.appendChild(contentElement);
+      commentElement.appendChild(replyForm);
+
+      // Add event listener to the reply form submit event
+      replyForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var replyContent = replyTextarea.value;
+
+        var replyElement = document.createElement('div');
+        replyElement.className = 'comment reply';
+
+        var replyAuthorElement = document.createElement('div');
+        replyAuthorElement.className = 'author';
+        replyAuthorElement.textContent = author + ' (Reply)';
+
+        var replyTimestampElement = document.createElement('div');
+        replyTimestampElement.className = 'timestamp';
+        replyTimestampElement.textContent = new Date().toLocaleString();
+
+        var replyContentElement = document.createElement('div');
+        replyContentElement.className = 'content';
+        replyContentElement.textContent = replyContent;
+
+        replyElement.appendChild(replyAuthorElement);
+        replyElement.appendChild(replyTimestampElement);
+        replyElement.appendChild(replyContentElement);
+
+        commentElement.appendChild(replyElement);
+
+        replyTextarea.value = '';
+      });
+
+      // Add the comment to the comments section
+      var commentsSection = document.getElementById('comments');
+      commentsSection.appendChild(commentElement);
+
+      // Clear the form fields
+      document.getElementById('author').value = '';
+      document.getElementById('content').value = '';
+    }
+
+    // Add event listener to the form submit event
+    var commentForm = document.getElementById('comment-form');
+    commentForm.addEventListener('submit', submitComment);
+  </script>
+</body>
+</html>
